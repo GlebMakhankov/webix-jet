@@ -1,36 +1,23 @@
-export const DatapageStatuses = () => ({
-  rows: [
-    {
-      view: "form",
-      id: "statusesForm",
-      margin: 20,
-      elements: [
-        {
-          cols: [
-            {
-              view: "text",
-              label: "Name",
-              name: "Name",
-            },
-            {
-              view: "text",
-              label: "Icon",
-              name: "Icon",
-            },
-            {
-              view: "button",
-              value: "Add",
-              width: 200,
-              css: "webix_primary",
-              click: () =>
-                $$("datapageStatuses").add($$("statusesForm").getValues()),
-            },
-          ],
-        },
-      ],
-    },
-    {
+import { JetView } from "webix-jet";
+import { statuses } from "../models/statuses";
+import "./myCustomForm";
+
+export default class StatusesView extends JetView {
+  config() {
+    const form = {
+      view: "myCustomForm",
+      localId: "statusesForm",
+      fields: ["Name", "Icon"],
+      saveAction: () => {
+        const form = this.$$("statusesForm");
+        this.$$("statusesTable").add(form.getValues());
+        form.clear();
+      },
+    };
+
+    const datatable = {
       view: "datatable",
+      localId: "statusesTable",
       columns: [
         {
           id: "Name",
@@ -53,7 +40,6 @@ export const DatapageStatuses = () => ({
           sort: "text",
         },
       ],
-      id: "datapageStatuses",
       editable: true,
       editaction: "dblclick",
       onClick: {
@@ -64,10 +50,19 @@ export const DatapageStatuses = () => ({
               text: "Are you sure about that?",
             })
             .then(() => {
-              $$("datapageStatuses").remove(id);
+              this.$$("statusesTable").remove(id);
             });
         },
       },
-    },
-  ],
-});
+    };
+
+    const ui = {
+      rows: [form, datatable],
+    };
+
+    return ui;
+  }
+  init() {
+    this.$$("statusesTable").parse(statuses);
+  }
+}

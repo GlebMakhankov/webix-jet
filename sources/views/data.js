@@ -1,17 +1,31 @@
 import { JetView } from "webix-jet";
-import { DatapageView } from "../components/Datapage/Datapage_View";
-import { DatapageTabbar } from "../components/Datapage/Datapage_tabbar";
-import { countries } from "../models/countries";
-import { statuses } from "../models/statuses";
+import CountriesView from "../components/countries";
+import StatusesView from "../components/statuses";
 
 export default class DataView extends JetView {
   config() {
-    return {
-      rows: [DatapageTabbar(), DatapageView()],
+    const multiviewTabbar = {
+      view: "tabbar",
+      id: "datapageTabbar",
+      multiview: true,
+      options: [
+        { value: "Countries", id: "countries" },
+        { value: "Statuses", id: "statuses" },
+      ],
     };
-  }
-  init() {
-    $$("datapageCountries").parse(countries);
-    $$("datapageStatuses").parse(statuses);
+
+    const multiview = {
+      gravity: 8,
+      cells: [
+        { id: "countries", cols: [CountriesView] },
+        { id: "statuses", cols: [StatusesView] },
+      ],
+    };
+
+    const ui = {
+      rows: [multiviewTabbar, multiview],
+    };
+
+    return ui;
   }
 }
