@@ -1,0 +1,16 @@
+export default {
+	Contacts: "Контакты",
+	Data: "Данные",
+	Settings: "Настройки",
+	Russian: "Русский",
+	English: "Английский",
+	Countries: "Страны",
+	Country: "Страна",
+	Statuses: "Статусы",
+	Status: "Статус",
+	Add: "Добавить",
+	"Delete entry?": "Удалить запись?",
+	"Are you sure about that?": "Вы уверены?",
+	Name: "Имя",
+	Icon: "Иконка",
+};

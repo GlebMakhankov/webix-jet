@@ -1,0 +1,16 @@
+export default {
+	Contacts: "Contacts",
+	Data: "Data",
+	Settings: "Settings",
+	Russian: "Russian",
+	English: "English",
+	Countries: "Countries",
+	Country: "Country",
+	Statuses: "Statuses",
+	Status: "Status",
+	Add: "Add",
+	"Delete entry?": "Delete entry?",
+	"Are you sure about that?": "Are you sure about that?",
+	Name: "Name",
+	Icon: "Icon",
+};

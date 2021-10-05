@@ -1,56 +1,78 @@
 import { JetView } from "webix-jet";
-import { contacts } from "../models/contacts";
+import ContactsFormView from "../components/contactsForm";
+import { Storage } from "../models/Storage";
+import getRandomUser from "../functions/GetRandomUser";
 
 export default class ContactsView extends JetView {
-  config() {
-    const createButton = (type) => {
-      return {
-        view: "button",
-        value: type,
-        css: type.toLowerCase() == "save" ? "webix_primary" : "",
-        click: () => webix.message(`<strong>${type}</strong> button clicked`),
-      };
-    };
-    const contactsForm = {
-      view: "form",
-      maxWidth: 400,
-      margin: 10,
-      id: "contactsForm",
-      elements: [
-        { template: "Form for contacts", type: "section" },
-        {
-          view: "text",
-          label: "The First",
-          name: "first",
-        },
-        {
-          view: "text",
-          label: "The Second",
-          name: "second",
-        },
-        { maxHeight: 15 },
-        {
-          margin: 15,
-          cols: [createButton("Save"), createButton("Clear")],
-        },
-        {},
-      ],
-    };
+	config() {
+		const _ = this.app.getService("locale")._;
 
-    const contactsList = {
-      view: "list",
-      localId: "usersList",
-      template: (obj) => `${obj.Name}`,
-    };
+		const contactsListAddButton = {
+			view: "button",
+			value: _("Add"),
+			css: "webix_primary contactsListAddButton",
+			align: "right",
+			click: () => {
+				const list = this.$$("contactsList");
+				Storage.contacts.add(getRandomUser());
+				this.setUrlAndSelect(list.getLastId());
+			},
+		};
 
-    const ui = {
-      cols: [contactsList, contactsForm],
-    };
+		const contactsList = {
+			view: "list",
+			localId: "contactsList",
+			select: true,
+			template: (obj) =>
+				`${obj.Name}, ${obj.Email} <span class='webix_icon wxi-trash deleteUser'></span>`,
+			on: {
+				onAfterSelect: (id) => {
+					const form = this.getSubView("form").getRoot();
+					form.setValues(this.$$("contactsList").getItem(id));
+					this.setParam("id", id, true);
+				},
+			},
+			onClick: {
+				deleteEntry: (e, id) => {
+					webix
+						.confirm({
+							title: _("Delete entry?"),
+							text: _("Are you sure about that?"),
+						})
+						.then(() => {
+							this.$$("contactsList").remove(id);
+						});
+				},
+			},
+		};
 
-    return ui;
-  }
+		const listWithBtn = {
+			rows: [contactsList, contactsListAddButton],
+		};
 
-  init() {
-    this.$$("usersList").parse(contacts);
-  }
+		const ui = {
+			cols: [listWithBtn, { $subview: ContactsFormView, name: "form" }],
+		};
+
+		return ui;
+	}
+
+	init() {
+		this.$$("contactsList").sync(Storage.contacts);
+	}
+
+	ready() {
+		const idParam = this.getParam("id");
+		const list = this.$$("contactsList");
+		const selectId =
+						idParam && Storage.contacts.exists(idParam) ? idParam : list.getFirstId();
+		this.setUrlAndSelect(selectId);
+	}
+
+	setUrlAndSelect(selectId) {
+		const form = this.getSubView("form").getRoot();
+		const list = this.$$("contactsList");
+		form.setValues(list.getItem(selectId));
+		list.select(selectId);
+	}
 }
