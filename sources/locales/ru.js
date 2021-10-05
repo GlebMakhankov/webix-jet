@@ -9,8 +9,16 @@ export default {
 	Statuses: "Статусы",
 	Status: "Статус",
 	Add: "Добавить",
+	Save: "Сохранить",
+	Clear: "Очистить",
 	"Delete entry?": "Удалить запись?",
 	"Are you sure about that?": "Вы уверены?",
+	"Form for contacts": "Форма для контактов",
+	"<strong>No</strong> attached event":
+				"<strong>Нет</strong> привязанного события",
+	"Successfully updated!": "Успешно обновлено!",
+	"Choose existing contact!": "<strong>Выберите существующий контакт!</strong>",
 	Name: "Имя",
 	Icon: "Иконка",
+	Email: "Email",
 };

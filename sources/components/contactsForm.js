@@ -3,15 +3,20 @@ import { Storage } from "../models/Storage";
 
 export default class ContactsFormView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const createButton = (type, clickAction) => {
 			return {
 				view: "button",
 				value: type,
-				css: type.toLowerCase() === "save" ? "webix_primary" : "",
+				css:
+										type.toLowerCase() === "save" || type.toLowerCase() === "сохранить"
+											? "webix_primary"
+											: "",
 				click: () =>
 					clickAction
 						? clickAction()
-						: webix.message("<strong>No</strong> attached event"),
+						: webix.message(_("<strong>No</strong> attached event")),
 			};
 		};
 
@@ -27,21 +32,21 @@ export default class ContactsFormView extends JetView {
 				Status: webix.rules.isNotEmpty,
 			},
 			elements: [
-				{ template: "Form for contacts", type: "section" },
+				{ template: _("Form for contacts"), type: "section" },
 				{
 					view: "text",
-					label: "Name",
+					label: _("Name"),
 					name: "Name",
 				},
 				{
 					view: "text",
-					label: "Email",
+					label: _("Email"),
 					name: "Email",
 				},
 				{
 					view: "combo",
 					localId: "comboBoxCountry",
-					label: "Country",
+					label: _("Country"),
 					name: "Country",
 					options: {
 						body: {
@@ -52,7 +57,7 @@ export default class ContactsFormView extends JetView {
 				{
 					view: "combo",
 					localId: "comboBoxStatus",
-					label: "Status",
+					label: _("Status"),
 					name: "Status",
 					options: {
 						body: {
@@ -64,17 +69,21 @@ export default class ContactsFormView extends JetView {
 				{
 					margin: 15,
 					cols: [
-						createButton("Save", () => {
+						createButton(_("Save"), () => {
 							const form = this.$$("contactsForm");
 							if (form.validate()) {
 								const entry = form.getValues();
-								Storage.contacts.updateItem(entry.id, entry);
-								webix.message("Successfully updated!");
-								form.clear();
-								form.clearValidation();
+								if (entry.id) {
+									Storage.contacts.updateItem(entry.id, entry);
+									webix.message(_("Successfully updated!"));
+								} else {
+									webix.message(_("Choose existing contact!"));
+								}
 							}
+							form.clear();
+							form.clearValidation();
 						}),
-						createButton("Clear", () => {
+						createButton(_("Clear"), () => {
 							const form = this.$$("contactsForm");
 							form.clear();
 							form.clearValidation();

@@ -12,7 +12,7 @@ export default class SettingsView extends JetView {
 				{ id: "ru", value: _("Russian") },
 				{ id: "en", value: _("English") },
 			],
-			on: { onAfterTabClick: () => this.toggleLanguage() },
+			click: () => this.toggleLanguage(),
 		};
 
 		return segmentedButton;

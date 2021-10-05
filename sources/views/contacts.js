@@ -33,7 +33,7 @@ export default class ContactsView extends JetView {
 				},
 			},
 			onClick: {
-				deleteEntry: (e, id) => {
+				deleteUser: (e, id) => {
 					webix
 						.confirm({
 							title: _("Delete entry?"),

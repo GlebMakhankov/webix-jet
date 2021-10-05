@@ -25,7 +25,7 @@ export default webix.protoUI(
 		createFields(config) {
 			return config.fields.map((element) => ({
 				view: "text",
-				label: [element],
+				label: config._([element]),
 				name: [element],
 			}));
 		},
@@ -33,9 +33,9 @@ export default webix.protoUI(
 		createButton(config, type) {
 			return {
 				view: "button",
-				value: type,
+				value: config._(type),
 				width: 200,
-				css: type == "Save" ? "webix_primary" : "",
+				css: type === "Save" || "Сохранить" ? "webix_primary" : "",
 				click: () =>
 					(config[type.toLowerCase() + "Action"]
 						? config[type.toLowerCase() + "Action"]

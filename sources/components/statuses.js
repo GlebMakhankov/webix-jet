@@ -10,6 +10,7 @@ export default class StatusesView extends JetView {
 			view: "myCustomForm",
 			localId: "statusesForm",
 			fields: ["Name", "Icon"],
+			_: _,
 			saveAction: () => {
 				const form = this.$$("statusesForm");
 				Storage.statuses.add(form.getValues());

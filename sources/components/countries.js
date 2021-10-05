@@ -10,6 +10,7 @@ export default class CountriesView extends JetView {
 			view: "myCustomForm",
 			fields: ["Name"],
 			localId: "countriesForm",
+			_: _,
 			saveAction: () => {
 				const form = this.$$("countriesForm");
 				Storage.countries.add(form.getValues());
@@ -41,8 +42,8 @@ export default class CountriesView extends JetView {
 				deleteEntry: (e, id) => {
 					webix
 						.confirm({
-							title: "Delete entry?",
-							text: "Are you sure about that?",
+							title: _("Delete entry?"),
+							text: _("Are you sure about that?"),
 						})
 						.then(() => {
 							this.$$("countriesTable").remove(id);
