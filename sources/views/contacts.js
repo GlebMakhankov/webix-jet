@@ -37,7 +37,7 @@ export default class ContactsView extends JetView {
             })
             .then(() => {
               this.$$("contactsList").remove(id);
-				  this.getSubView("form").clearAll();
+              this.getSubView("form").clearAll();
             });
         },
       },
@@ -56,12 +56,17 @@ export default class ContactsView extends JetView {
 
   init() {
     this.$$("contactsList").sync(Storage.contacts);
+    this.on(this.app, "app:action:contactsForm:clearAll", () =>
+      this.$$("contactsList").unselectAll()
+    );
   }
 
   ready() {
     const idParam = this.getParam("id");
     const selectId =
-      idParam && Storage.contacts.exists(idParam) ? idParam : this.$$("contactsList").getFirstId();
+      idParam && Storage.contacts.exists(idParam)
+        ? idParam
+        : this.$$("contactsList").getFirstId();
     this.setUrlAndSelectAndForm(selectId);
   }
 

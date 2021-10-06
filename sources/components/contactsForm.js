@@ -103,7 +103,7 @@ export default class ContactsFormView extends JetView {
     const form = this.$$("contactsForm");
     form.clear();
     form.clearValidation();
-    this.getParentView().$$("contactsList").unselectAll();
+	 this.app.callEvent("app:action:contactsForm:clearAll");
     this.show("/top/contacts");
   }
 }
