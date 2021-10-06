@@ -1,68 +1,71 @@
 import { JetView } from "webix-jet";
-import { statuses } from "../models/statuses";
+import { Storage } from "../models/Storage";
 import "./myCustomForm";
 
 export default class StatusesView extends JetView {
-  config() {
-    const form = {
-      view: "myCustomForm",
-      localId: "statusesForm",
-      fields: ["Name", "Icon"],
-      saveAction: () => {
-        const form = this.$$("statusesForm");
-        this.$$("statusesTable").add(form.getValues());
-        form.clear();
-      },
-    };
+	config() {
+		const _ = this.app.getService("locale")._;
 
-    const datatable = {
-      view: "datatable",
-      localId: "statusesTable",
-      columns: [
-        {
-          id: "Name",
-          header: "Status",
-          fillspace: true,
-          sort: "text",
-          editor: "text",
-        },
-        {
-          id: "Icon",
-          header: "Icon",
-          fillspace: true,
-          sort: "text",
-          editor: "text",
-        },
-        {
-          header: "",
-          template: "<span class='webix_icon wxi-trash deleteEntry'></span>",
-          width: 50,
-          sort: "text",
-        },
-      ],
-      editable: true,
-      editaction: "dblclick",
-      onClick: {
-        deleteEntry: (e, id) => {
-          webix
-            .confirm({
-              title: "Delete entry?",
-              text: "Are you sure about that?",
-            })
-            .then(() => {
-              this.$$("statusesTable").remove(id);
-            });
-        },
-      },
-    };
+		const form = {
+			view: "myCustomForm",
+			localId: "statusesForm",
+			fields: ["Name", "Icon"],
+			_: _,
+			saveAction: () => {
+				const form = this.$$("statusesForm");
+				Storage.statuses.add(form.getValues());
+				form.clear();
+			},
+		};
 
-    const ui = {
-      rows: [form, datatable],
-    };
+		const datatable = {
+			view: "datatable",
+			localId: "statusesTable",
+			columns: [
+				{
+					id: "Name",
+					header: _("Status"),
+					fillspace: true,
+					sort: "text",
+					editor: "text",
+				},
+				{
+					id: "Icon",
+					header: _("Icon"),
+					fillspace: true,
+					sort: "text",
+					editor: "text",
+				},
+				{
+					header: "",
+					template: "<span class='webix_icon wxi-trash deleteEntry'></span>",
+					width: 50,
+					sort: "text",
+				},
+			],
+			editable: true,
+			editaction: "dblclick",
+			onClick: {
+				deleteEntry: (e, id) => {
+					webix
+						.confirm({
+							title: _("Delete entry?"),
+							text: _("Are you sure about that?"),
+						})
+						.then(() => {
+							this.$$("statusesTable").remove(id);
+						});
+				},
+			},
+		};
 
-    return ui;
-  }
-  init() {
-    this.$$("statusesTable").parse(statuses);
-  }
+		const ui = {
+			rows: [form, datatable],
+		};
+
+		return ui;
+	}
+	init() {
+		this.$$("statusesTable").sync(Storage.statuses);
+	}
 }

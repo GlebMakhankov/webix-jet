@@ -3,29 +3,31 @@ import CountriesView from "../components/countries";
 import StatusesView from "../components/statuses";
 
 export default class DataView extends JetView {
-  config() {
-    const multiviewTabbar = {
-      view: "tabbar",
-      id: "datapageTabbar",
-      multiview: true,
-      options: [
-        { value: "Countries", id: "countries" },
-        { value: "Statuses", id: "statuses" },
-      ],
-    };
+	config() {
+		const _ = this.app.getService("locale")._;
 
-    const multiview = {
-      gravity: 8,
-      cells: [
-        { id: "countries", cols: [CountriesView] },
-        { id: "statuses", cols: [StatusesView] },
-      ],
-    };
+		const multiviewTabbar = {
+			view: "tabbar",
+			id: "datapageTabbar",
+			multiview: true,
+			options: [
+				{ value: _("Countries"), id: "countries" },
+				{ value: _("Statuses"), id: "statuses" },
+			],
+		};
 
-    const ui = {
-      rows: [multiviewTabbar, multiview],
-    };
+		const multiview = {
+			gravity: 8,
+			cells: [
+				{ id: "countries", cols: [CountriesView] },
+				{ id: "statuses", cols: [StatusesView] },
+			],
+		};
 
-    return ui;
-  }
+		const ui = {
+			rows: [multiviewTabbar, multiview],
+		};
+
+		return ui;
+	}
 }
