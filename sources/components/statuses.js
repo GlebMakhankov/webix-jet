@@ -53,7 +53,7 @@ export default class StatusesView extends JetView {
 							text: _("Are you sure about that?"),
 						})
 						.then(() => {
-							this.$$("statusesTable").remove(id);
+							Storage.statuses.remove(id);
 						});
 				},
 			},
