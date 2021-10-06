@@ -104,6 +104,5 @@ export default class ContactsFormView extends JetView {
     form.clear();
     form.clearValidation();
 	 this.app.callEvent("app:action:contactsForm:clearAll");
-    this.show("/top/contacts");
   }
 }

@@ -56,9 +56,10 @@ export default class ContactsView extends JetView {
 
   init() {
     this.$$("contactsList").sync(Storage.contacts);
-    this.on(this.app, "app:action:contactsForm:clearAll", () =>
-      this.$$("contactsList").unselectAll()
-    );
+    this.on(this.app, "app:action:contactsForm:clearAll", () => {
+      this.$$("contactsList").unselectAll();
+		this.show("/top/contacts");
+    });
   }
 
   ready() {
