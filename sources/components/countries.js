@@ -46,7 +46,7 @@ export default class CountriesView extends JetView {
 							text: _("Are you sure about that?"),
 						})
 						.then(() => {
-							this.$$("countriesTable").remove(id);
+							Storage.countries.remove(id);
 						});
 				},
 			},

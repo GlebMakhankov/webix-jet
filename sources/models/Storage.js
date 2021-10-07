@@ -1,17 +1,16 @@
-import { contacts } from "./contacts";
-import { countries } from "./countries";
-import { statuses } from "./statuses";
-
 class StorageConstructor {
 	constructor() {
 		this.contacts = new webix.DataCollection({
-			data: contacts,
+			url: "http://localhost:8096/api/v1/contacts/",
+			save: "rest->http://localhost:8096/api/v1/contacts/",
 		});
 		this.countries = new webix.DataCollection({
-			data: countries,
+			url: "http://localhost:8096/api/v1/countries/",
+			save: "rest->http://localhost:8096/api/v1/countries/",
 		});
 		this.statuses = new webix.DataCollection({
-			data: statuses,
+			url: "http://localhost:8096/api/v1/statuses/",
+			save: "rest->http://localhost:8096/api/v1/statuses/",
 		});
 	}
 }
